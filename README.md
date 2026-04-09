@@ -261,7 +261,7 @@ This project is submitted as an IEEE format research paper:
  
 ## 👩‍💻 Author
  
-**Riddhima Shah** , **Avni Sethi**, **Shriya Shetty** 
+**Riddhima Shah** , **Avni Sethi**, **Shriya Shetty** /n
 BTech Third Year Project  
 Subjects: Evolutionary Computing + Advanced Topics in Machine Learning  
  
