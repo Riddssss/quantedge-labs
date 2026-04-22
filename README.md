@@ -251,11 +251,11 @@ VITE_API_URL=http://localhost:8000
  
 This project is submitted as an IEEE format research paper:
  
-**Title:** "Genetic Algorithm and Particle Swarm Optimization Based Trading Strategy System for the Indian Banking Sector with Transformer Signal Integration"
+**Title:** "GA and PSO Based Trading Strategy Optimization with Transformer Integration for Indian Markets"
  
 **Abstract:** This paper presents an intelligent trading strategy optimization system for the Indian Banking Sector (Bank Nifty Index). A Transformer encoder generates a daily directional signal from 60-day sequential market patterns using self-attention mechanisms. This signal is incorporated as an additional gene in a chromosome representation optimized by both Genetic Algorithm (GA) and Particle Swarm Optimization (PSO) to maximize the Sharpe Ratio. Experimental results on 18 years of Bank Nifty data demonstrate that PSO achieves the highest risk-adjusted return with a Sharpe Ratio of 1.4277, while PSO augmented with Transformer signal achieves the highest raw return of 45.82%.
  
-**Keywords:** Genetic Algorithm, Particle Swarm Optimization, Algorithmic Trading, Transformer Encoder, Sharpe Ratio, Bank Nifty, Evolutionary Computing, Financial Machine Learning
+**Keywords:** —Genetic Algorithm, Particle Swarm Optimization, Algorithmic Trading, Multi-Head Transformer, Sharpe Ratio, Bank Nifty, Indian Stock Market, Evolutionary Computing
  
 ---
  
