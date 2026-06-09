@@ -189,6 +189,18 @@ export function PaperTradingSection({ useTransformer, onResult }: Props) {
       : "text-destructive"
   }
 />
+<MiniCard
+  label="Sharpe Ratio"
+  value={`${result.sharpe?.toFixed(2) ?? 0}`}
+  colorClass="text-copper"
+/>
+
+<MiniCard
+  label="Max Drawdown"
+  value={`${result.max_drawdown?.toFixed(2) ?? 0}%`}
+  colorClass="text-destructive"
+/>
+
 </div>
 
             {result.portfolio_curve && (
