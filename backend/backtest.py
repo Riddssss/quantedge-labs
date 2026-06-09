@@ -24,10 +24,9 @@ def decode_t(chrom):
 
 
 def _compute_metrics(portfolio, capital, df, trades):
-    """Compute Sharpe, return, drawdown from portfolio values"""
     total_return = (capital - 100000) / 100000
-    port         = np.array(portfolio)
-    daily_ret    = np.diff(port) / (port[:-1] + 1e-9)
+    port = np.array(portfolio)
+    daily_ret = np.diff(port) / (port[:-1] + 1e-9)
 
     if len(daily_ret) > 1 and daily_ret.std() > 1e-6:
         sharpe = (daily_ret.mean() / daily_ret.std()) * np.sqrt(252)
@@ -35,20 +34,72 @@ def _compute_metrics(portfolio, capital, df, trades):
         sharpe = 0.0
 
     sharpe = float(np.clip(sharpe, -10, 10))
-    peak   = np.maximum.accumulate(port)
-    dd     = (port - peak) / (peak + 1e-9)
+
+    peak = np.maximum.accumulate(port)
+    dd = (port - peak) / (peak + 1e-9)
     max_dd = float(dd.min())
 
+    trade_pnls = [
+        t['pnl']
+        for t in trades
+        if t['type'] == 'SELL' and 'pnl' in t
+    ]
+
+    if len(trade_pnls) > 0:
+        wins = [p for p in trade_pnls if p > 0]
+        losses = [p for p in trade_pnls if p < 0]
+
+        win_rate = (len(wins) / len(trade_pnls)) * 100
+
+        gross_profit = sum(wins)
+        gross_loss = abs(sum(losses))
+
+        profit_factor = (
+            gross_profit / gross_loss
+            if gross_loss > 0
+            else gross_profit
+        )
+
+        best_trade = max(trade_pnls)
+        worst_trade = min(trade_pnls)
+        avg_trade = np.mean(trade_pnls)
+    else:
+        win_rate = 0.0
+        profit_factor = 0.0
+        best_trade = 0.0
+        worst_trade = 0.0
+        avg_trade = 0.0
+
+    dates = [
+        str(df.iloc[i]['Date'].date())
+        for i in range(len(df))
+    ]
+
+    portfolio_curve = [
+        {
+            "date": dates[i],
+            "value": round(portfolio[i], 2)
+        }
+        for i in range(len(portfolio))
+    ]
+
     return {
-        'sharpe'      : round(sharpe, 4),
+        'sharpe': round(sharpe, 4),
         'total_return': round(total_return * 100, 2),
         'max_drawdown': round(max_dd * 100, 2),
-        'final_value' : round(capital, 2),
-        'num_trades'  : len([t for t in trades if t['type'] == 'BUY']),
-        'trades'      : trades,
-        'portfolio'   : [round(v, 2) for v in portfolio],
-        'dates'       : [str(df.iloc[i]['Date'].date())
-                         for i in range(len(df))]
+        'final_value': round(capital, 2),
+        'num_trades': len([t for t in trades if t['type'] == 'BUY']),
+
+        'win_rate': round(win_rate, 2),
+        'profit_factor': round(profit_factor, 2),
+        'best_trade': round(best_trade, 2),
+        'worst_trade': round(worst_trade, 2),
+        'avg_trade': round(avg_trade, 2),
+
+        'trades': trades,
+        'portfolio': [round(v, 2) for v in portfolio],
+        'portfolio_curve': portfolio_curve,
+        'dates': dates
     }
 
 

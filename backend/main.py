@@ -313,37 +313,62 @@ def paper_trade(req: PaperTradeRequest):
     if 'ga_chrom' not in _cache:
         return {"error": "Please run /api/optimize first"}
 
-    test_df         = _cache['test_df']
+    test_df = _cache['test_df']
     use_transformer = _cache.get('use_transformer', False)
-    scale           = req.capital / 100000
+    scale = req.capital / 100000
 
-    # Select model
     if use_transformer:
         if req.model in ["GA", "GA+Transformer"]:
             result = backtest_with_signal(
-                test_df, *decode_t(_cache['ga_chrom']))
+                test_df, *decode_t(_cache['ga_chrom'])
+            )
         else:
             result = backtest_with_signal(
-                test_df, *decode_t(_cache['pso_chrom']))
+                test_df, *decode_t(_cache['pso_chrom'])
+            )
     else:
         if req.model == "GA":
-            result = backtest(test_df, *decode(_cache['ga_chrom']))
+            result = backtest(
+                test_df, *decode(_cache['ga_chrom'])
+            )
         else:
-            result = backtest(test_df, *decode(_cache['pso_chrom']))
+            result = backtest(
+                test_df, *decode(_cache['pso_chrom'])
+            )
 
     return {
         "starting_capital": req.capital,
-        "final_value"     : round(result['final_value'] * scale, 2),
-        "profit"          : round(
-            (result['final_value'] - 100000) * scale, 2),
-        "total_return"    : result['total_return'],
-        "sharpe"          : result['sharpe'],
-        "max_drawdown"    : result['max_drawdown'],
-        "num_trades"      : result['num_trades'],
-        "trades"          : result['trades'],
-        "portfolio"       : [round(v * scale, 2)
-                             for v in result['portfolio']],
-        "dates"           : result['dates']
+        "final_value": round(result['final_value'] * scale, 2),
+        "profit": round(
+            (result['final_value'] - 100000) * scale, 2
+        ),
+        "total_return": result['total_return'],
+        "sharpe": result['sharpe'],
+        "max_drawdown": result['max_drawdown'],
+        "num_trades": result['num_trades'],
+
+        "win_rate": result['win_rate'],
+        "profit_factor": result['profit_factor'],
+        "best_trade": result['best_trade'],
+        "worst_trade": result['worst_trade'],
+        "avg_trade": result['avg_trade'],
+
+        "trades": result['trades'],
+
+        "portfolio": [
+            round(v * scale, 2)
+            for v in result['portfolio']
+        ],
+
+        "portfolio_curve": [
+            {
+                "date": point["date"],
+                "value": round(point["value"] * scale, 2)
+            }
+            for point in result["portfolio_curve"]
+        ],
+
+        "dates": result['dates']
     }
 
 
