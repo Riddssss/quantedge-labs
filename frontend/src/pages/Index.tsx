@@ -87,29 +87,35 @@ const Index = () => {
         best_return : pso.total_return ?? null,
         max_drawdown: pso.max_drawdown ?? null,
 
-        model_comparison: [
-          {
-            model       : "GA",
-            sharpe      : ga.sharpe       ?? 0,
-            return_pct  : ga.total_return ?? 0,
-            max_drawdown: ga.max_drawdown ?? 0,
-            trades      : ga.num_trades   ?? 0
-          },
-          {
-            model       : "PSO",
-            sharpe      : pso.sharpe       ?? 0,
-            return_pct  : pso.total_return ?? 0,
-            max_drawdown: pso.max_drawdown ?? 0,
-            trades      : pso.num_trades   ?? 0
-          },
-          {
-            model       : "Buy & Hold",
-            sharpe      : 0,
-            return_pct  : bh.total_return ?? 0,
-            max_drawdown: 0,
-            trades      : 1
-          },
-        ],
+       model_comparison: [
+  {
+    model         : "GA",
+    sharpe        : ga.sharpe        ?? 0,
+    return_pct    : ga.total_return  ?? 0,
+    max_drawdown  : ga.max_drawdown  ?? 0,
+    trades        : ga.num_trades    ?? 0,
+    win_rate      : ga.win_rate      ?? 0,
+    profit_factor : ga.profit_factor ?? 0
+  },
+  {
+    model         : "PSO",
+    sharpe        : pso.sharpe        ?? 0,
+    return_pct    : pso.total_return  ?? 0,
+    max_drawdown  : pso.max_drawdown  ?? 0,
+    trades        : pso.num_trades    ?? 0,
+    win_rate      : pso.win_rate      ?? 0,
+    profit_factor : pso.profit_factor ?? 0
+  },
+  {
+    model         : "Buy & Hold",
+    sharpe        : 0,
+    return_pct    : bh.total_return ?? 0,
+    max_drawdown  : 0,
+    trades        : 1,
+    win_rate      : 0,
+    profit_factor : 0
+  },
+],
 
         equity_curves: dates.map((date: string, i: number) => ({
           date,
