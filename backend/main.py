@@ -336,6 +336,20 @@ def paper_trade(req: PaperTradeRequest):
                 test_df, *decode(_cache['pso_chrom'])
             )
 
+    # Buy & Hold Benchmark
+    first_price = float(test_df.iloc[0]["Close"])
+    last_price = float(test_df.iloc[-1]["Close"])
+
+    buy_hold_return = (
+        (last_price - first_price)
+        / first_price
+    ) * 100
+
+    alpha = (
+        result["total_return"]
+        - buy_hold_return
+    )
+
     return {
         "starting_capital": req.capital,
         "final_value": round(result['final_value'] * scale, 2),
@@ -352,6 +366,9 @@ def paper_trade(req: PaperTradeRequest):
         "best_trade": result['best_trade'],
         "worst_trade": result['worst_trade'],
         "avg_trade": result['avg_trade'],
+
+        "buy_hold_return": round(buy_hold_return, 2),
+        "alpha": round(alpha, 2),
 
         "trades": result['trades'],
 
@@ -370,7 +387,6 @@ def paper_trade(req: PaperTradeRequest):
 
         "dates": result['dates']
     }
-
 
 @app.post("/api/transformer-window")
 def transformer_window(seq_len: int = 60):

@@ -162,18 +162,34 @@ export function PaperTradingSection({ useTransformer, onResult }: Props) {
                 colorClass="text-copper"
               />
 
-              <MiniCard
-                label="Best Trade"
-                value={`${result.best_trade?.toFixed(2) ?? 0}%`}
-                colorClass="text-success"
-              />
+<MiniCard
+  label="Best Trade"
+  value={`${result.best_trade?.toFixed(2) ?? 0}%`}
+  colorClass="text-success"
+/>
 
-              <MiniCard
-                label="Avg Trade"
-                value={`${result.avg_trade?.toFixed(2) ?? 0}%`}
-                colorClass="text-success"
-              />
-            </div>
+<MiniCard
+  label="Avg Trade"
+  value={`${result.avg_trade?.toFixed(2) ?? 0}%`}
+  colorClass="text-success"
+/>
+
+<MiniCard
+  label="Buy & Hold"
+  value={`${result.buy_hold_return?.toFixed(2) ?? 0}%`}
+  colorClass="text-purple"
+/>
+
+<MiniCard
+  label="Alpha"
+  value={`${result.alpha?.toFixed(2) ?? 0}%`}
+  colorClass={
+    (result.alpha ?? 0) >= 0
+      ? "text-success"
+      : "text-destructive"
+  }
+/>
+</div>
 
             {result.portfolio_curve && (
               <ResponsiveContainer width="100%" height={250}>
